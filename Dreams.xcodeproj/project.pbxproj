@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		001D0419294B29EB001B224E /* TransferConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D0418294B29EB001B224E /* TransferConsent.swift */; };
+		00DB6AA529C84D4500FA8E34 /* AccountRequested.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DB6AA429C84D4500FA8E34 /* AccountRequested.swift */; };
 		1A0C2C8A25AC7F9F00279C0C /* DreamsNetworkInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C2C8925AC7F9F00279C0C /* DreamsNetworkInteraction.swift */; };
 		1A0C2C8E25AC7FD900279C0C /* DreamsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C2C8D25AC7FD900279C0C /* DreamsConfiguration.swift */; };
 		1A0C2C9C25AC9C9100279C0C /* DreamsCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C2C9B25AC9C9100279C0C /* DreamsCredentials.swift */; };
@@ -55,7 +56,8 @@
 
 /* Begin PBXFileReference section */
 		001D0418294B29EB001B224E /* TransferConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferConsent.swift; sourceTree = "<group>"; };
-		1A02FC0025C19DBC0080A67E /* Dreams.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Dreams.podspec; sourceTree = "<group>"; };
+		00DB6AA429C84D4500FA8E34 /* AccountRequested.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRequested.swift; sourceTree = "<group>"; };
+		1A02FC0025C19DBC0080A67E /* DreamsEnterpriseSDK.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DreamsEnterpriseSDK.podspec; sourceTree = "<group>"; };
 		1A0C2C8925AC7F9F00279C0C /* DreamsNetworkInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsNetworkInteraction.swift; sourceTree = "<group>"; };
 		1A0C2C8D25AC7FD900279C0C /* DreamsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsConfiguration.swift; sourceTree = "<group>"; };
 		1A0C2C9B25AC9C9100279C0C /* DreamsCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsCredentials.swift; sourceTree = "<group>"; };
@@ -139,7 +141,7 @@
 		FA343FE2251CDD950073F33E = {
 			isa = PBXGroup;
 			children = (
-				1A02FC0025C19DBC0080A67E /* Dreams.podspec */,
+				1A02FC0025C19DBC0080A67E /* DreamsEnterpriseSDK.podspec */,
 				1AAC42D525B0AFE200A56457 /* README.md */,
 				FA343FEE251CDD950073F33E /* Sources */,
 				FA6CD8E02525EB2700E68FA7 /* Tests */,
@@ -179,6 +181,7 @@
 				1A12D2D525C828C10022A73B /* LocaleFormatter.swift */,
 				1A12D2D925C95CAF0022A73B /* LocaleFormatting.swift */,
 				001D0418294B29EB001B224E /* TransferConsent.swift */,
+				00DB6AA429C84D4500FA8E34 /* AccountRequested.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				1A12D2DA25C95CAF0022A73B /* LocaleFormatting.swift in Sources */,
 				FA73781825876E7600B662F3 /* ResponseEvent.swift in Sources */,
 				1A0C2C8A25AC7F9F00279C0C /* DreamsNetworkInteraction.swift in Sources */,
+				00DB6AA529C84D4500FA8E34 /* AccountRequested.swift in Sources */,
 				FAF52E04252F2FC90099D38F /* WebServiceType.swift in Sources */,
 				1A0C2CCE25AF59A700279C0C /* WebViewProtocol.swift in Sources */,
 				FAF52E0A252F36A80099D38F /* DreamsDelegate.swift in Sources */,

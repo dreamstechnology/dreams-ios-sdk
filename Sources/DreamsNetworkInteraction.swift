@@ -102,6 +102,19 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
                     self.transferConsentRequestCancelled(requestId: err.requestId, consentId: err.consentId)
                 }
             }
+        case .onAccountRequested:
+            guard let requestIdInput = jsonObject?["requestId"] as? String else { return }
+            guard let dreamInput = jsonObject?["dream"] as? [String: Any] else { return }
+            delegate?.handleDreamsAccountRequested(requestId: requestIdInput, dream: dreamInput) { result in
+                switch result {
+                    
+                    case .success(let data):
+                    self.accountRequestedSucceeded(requestId: data.requestId)
+                    
+                    case .failure(let err):
+                    self.accountRequestedFailed(requestId: err.requestId)
+                }
+            }
         }
     }
 
@@ -127,12 +140,24 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
         send(event: .transferConsentCancelled, with: jsonObject)
     }
 
+    private func accountRequestedSucceeded(requestId: String) {
+        let jsonObject: JSONObject = ["requestId": requestId]
+
+        send(event: .accountRequestedSucceeded, with: jsonObject)
+    }
+
+    private func accountRequestedFailed(requestId: String) {
+        let jsonObject: JSONObject = ["requestId": requestId]
+
+        send(event: .accountRequestedFailed, with: jsonObject)
+    }
+
     private func setUpUserContentController() {
         ResponseEvent.allCases.forEach {
            webView.add(webService, name: $0.rawValue)
         }
     }
-    
+
     private func setUpNavigationDelegate() {
         webView.navigationDelegate = webService
     }
@@ -148,7 +173,7 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
     }
 
     private func loadBaseURL(credentials: DreamsCredentials, locale: Locale, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-    
+
         let body = [
             "token": credentials.idToken,
             "client_id": configuration.clientId,
@@ -183,7 +208,7 @@ extension DreamsNetworkInteraction: WebServiceDelegate {
     func webServiceDidReceiveMessage(service: WebServiceType, event: ResponseEvent, jsonObject: JSONObject?) {
         handle(event: event, with: jsonObject)
     }
-    
+
     func send(event: Request, with jsonObject: JSONObject?) {
         webService.prepareRequestMessage(event: event, with: jsonObject)
     }
