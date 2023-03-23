@@ -1,4 +1,4 @@
-# Dreams iOS SDK 
+# Dreams iOS SDK
 ![Dreams](https://raw.githubusercontent.com/dreamstechnology/dreams-ios-sdk/main/Dreams.jpg)
 
 [![Build Status](https://app.bitrise.io/app/a85e7d5e048cafc5/status.svg?token=ZnRPb1JZjxkq8YEt07RJCQ&branch=main)](https://app.bitrise.io/app/a85e7d5e048cafc5)
@@ -38,7 +38,7 @@ If you prefer not to use Cocoapods, you can simply integrate Dreams into your pr
 ```swift
 import Dreams
 ```
-    
+
 2. Add the following to your `application:didFinishLaunchingWithOptions:` in your `AppDelegate`:
 
 
@@ -52,16 +52,16 @@ Dreams.configure(configuration)
 ```swift
  let viewController = DreamsViewController()
 ```
-    
+
 4. Set the delegate and implement the `DreamsDelegate` methods:
 
 ```swift
 viewController.use(delegate: self)
 ```
-    
+
 5. Prepare user's credentials:
 
-```swift 
+```swift
 let userCredentials = DreamsCredentials(idToken: "idToken")
 ```
 
@@ -107,9 +107,9 @@ viewController.navigateTo(location: "/some/location")
 
 ### Safe Area
 
-Dreams interface is leveraging the Safe Area Layout Guides information to adjust the interface to different screens. Do not disable `Use Safe Area Layout Guides` in Interface Builder. 
+Dreams interface is leveraging the Safe Area Layout Guides information to adjust the interface to different screens. Do not disable `Use Safe Area Layout Guides` in Interface Builder.
 
-Do not modify `layoutMargins` or `directionalLayoutMargins` in parent view controller when `DreamsViewController` is presented as a child view controller. 
+Do not modify `layoutMargins` or `directionalLayoutMargins` in parent view controller when `DreamsViewController` is presented as a child view controller.
 
 ### DreamsDelegate
 
@@ -128,7 +128,7 @@ This method is called when a tracked event happened.
 func handleDreamsTelemetryEvent(name: String, payload: [String : Any]) {
     print("Telemetry event received: \(name) with payload: \(payload)")
 }
-``` 
+```
 
 This method is called when the host app is expected to initiate account provision.
 
@@ -139,8 +139,23 @@ func handleDreamsAccountProvisionInitiated(completion: @escaping () -> Void) {
     completion()
 }
 ```
+
+This method is called when the host app is expected to request an account.
+
+```swift
+
+func handleDreamsAccountRequested(requestId: String, dream: [String: Any], completion: @escaping (Result<AccountRequestedSuccess, AccountRequestedError>) -> Void) {
+    // Call `completion` when account has been requested, the user cancels or an error occurs.
+    // You can store the `completion` in a property to call it later.
+    completion(failure(AccountRequestedError(requestId: requestId, reason: "error")))
+    completion(failure(AccountRequestedError(requestId: requestId, reason: "cancelled")))
+
+    completion(.success(AccountRequestedSuccess(requestId: requestId)))
+}
+```
+
 This method is called when user finished interaction with Dreams and the interface should be dismissed.
-    
+
 ```swift
 func handleExitRequest() {
     // For example:

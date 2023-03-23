@@ -13,27 +13,27 @@ import Foundation
 @testable import Dreams
 
 final class DreamsDelegateSpy: DreamsDelegate {
-    
+
     var handleDreamsCredentialsExpiredCompletions: [(DreamsCredentials) -> Void] = []
     var handleDreamsTelemetryEventNames: [String] = []
     var handleDreamsTelemetryEventPayloads: [[String : Any]] = []
     var handleDreamsAccountProvisionInitiatedCompletions: [() -> Void] = []
     var handleDreamsTransferConsentRequestedCompletions: [(String, String, String) -> Void] = []
     var handleExitRequestCount = 0
-    
+
     func handleDreamsCredentialsExpired(completion: @escaping (DreamsCredentials) -> Void) {
         handleDreamsCredentialsExpiredCompletions.append(completion)
     }
-    
+
     func handleDreamsTelemetryEvent(name: String, payload: [String : Any]) {
         handleDreamsTelemetryEventNames.append(name)
         handleDreamsTelemetryEventPayloads.append(payload)
     }
-    
+
     func handleDreamsAccountProvisionInitiated(completion: @escaping () -> Void) {
         handleDreamsAccountProvisionInitiatedCompletions.append(completion)
     }
-    
+
     func handleDreamsTransferConsentRequested(requestId: String, consentId: String, completion: @escaping (Result<TransferConsentSuccess, TransferConsentError>) -> Void) {
         if (consentId == "invalid fail me") {
             completion(.failure(TransferConsentError(requestId: requestId, consentId: consentId)))
@@ -41,7 +41,15 @@ final class DreamsDelegateSpy: DreamsDelegate {
             completion(.success(TransferConsentSuccess(requestId: requestId, consentId: consentId, consentRef: "test consent ref")))
         }
     }
-    
+
+    func handleDreamsAccountRequested(requestId: String, dream: [String: Any], completion: @escaping (Result<AccountRequestedSuccess, AccountRequestedError>) -> Void) {
+        if (requestId == "invalid fail me") {
+            completion(.failure(AccountRequestedError(requestId: requestId, reason: "error")))
+        } else {
+            completion(.success(AccountRequestedSuccess(requestId: requestId)))
+        }
+    }
+
     func handleExitRequest() {
         handleExitRequestCount += 1
     }
