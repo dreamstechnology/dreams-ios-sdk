@@ -191,5 +191,89 @@ class WebServiceTests: XCTestCase {
             XCTFail()
         }
     }
-}
+    
+    func test_request_without_headers() {
+        let spyDelegate = WebServiceDelegateSpy()
+        let service = WebService()
+        service.delegate = spyDelegate
+        let mockURL = URL(string: "https://dreamstech.com")!
+        let webView = WKWebView()
+        
+        service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
+            // Nothing
+        }
 
+        let exp = XCTestExpectation(description: "Decision handler should be called")
+        let event = spyDelegate.events.last
+        let request = event?["request"] as! URLRequest
+        let action = FakeWKNavigationAction(fakeRequest: request)
+
+        XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+        XCTAssertEqual(request.allHTTPHeaderFields?.count, 1)
+        XCTAssertEqual(request.url, mockURL)
+        XCTAssertEqual(request.httpMethod, "POST")
+        XCTAssertEqual(request.httpBody, try! JSONSerialization.data(withJSONObject: ["test": "test"]))
+        
+        service.webView(webView, decidePolicyFor: action) { policy in
+            XCTAssertEqual(policy, .allow)
+            exp.fulfill()
+        }
+        
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func test_request_with_headers() {
+        let spyDelegate = WebServiceDelegateSpy()
+        let service = WebService()
+        service.delegate = spyDelegate
+        service.set(headers: ["Custom-Header": "header-value"])
+        let mockURL = URL(string: "https://dreamstech.com")!
+        let webView = WKWebView()
+        
+        service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
+            // Nothing
+        }
+
+        do {
+            let exp = XCTestExpectation(description: "Decision handler with cancel should be called")
+            let event = spyDelegate.events.last
+            let request = event?["request"] as! URLRequest
+            let action = FakeWKNavigationAction(fakeRequest: request)
+
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+            XCTAssertEqual(request.allHTTPHeaderFields?.count, 1)
+            XCTAssertEqual(request.url, mockURL)
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.httpBody, try! JSONSerialization.data(withJSONObject: ["test": "test"]))
+            
+            // First request should be cancelled and intercepted to add headers
+            service.webView(webView, decidePolicyFor: action) { policy in
+                XCTAssertEqual(policy, .cancel)
+                exp.fulfill()
+            }
+            
+            wait(for: [exp], timeout: 1.0)
+        }
+
+        do {
+            let exp = XCTestExpectation(description: "Decision handler with allow should be called")
+            let event = spyDelegate.events.last
+            let request = event?["request"] as! URLRequest
+            let action = FakeWKNavigationAction(fakeRequest: request)
+            
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Custom-Header"), "header-value")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+            XCTAssertEqual(request.allHTTPHeaderFields?.count, 2)
+            XCTAssertEqual(request.url, mockURL)
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.httpBody, try! JSONSerialization.data(withJSONObject: ["test": "test"]))
+            
+            service.webView(webView, decidePolicyFor: action) { policy in
+                XCTAssertEqual(policy, .allow)
+                exp.fulfill()
+            }
+
+            wait(for: [exp], timeout: 1.0)
+        }
+    }
+}

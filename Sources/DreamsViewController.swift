@@ -18,25 +18,27 @@ public protocol DreamsLaunching: AnyObject {
 
      - parameter with: credentials - DreamsCredentials
      - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
      - parameter completion: Called when Dreams did launch successfuly or failed
 
      - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
 
      */
-    func launch(with credentials: DreamsCredentials, locale: Locale, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?)
+    func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?)
 
     /**
      This method MUST be called just after the DreamsViewController is presented, the Dreams interface will be launched for given credentials.
 
      - parameter with: credentials - DreamsCredentials
      - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
      - parameter completion: Called when Dreams did launch successfuly or failed
      - parameter location: the host app can ask DreamsSDK to start Dreams with certain location
 
      - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
 
      */
-    func launch(with credentials: DreamsCredentials, locale: Locale, location: String, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?)
+    func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]?, location: String, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?)
 }
 
 public extension DreamsLaunching {
@@ -49,7 +51,7 @@ public extension DreamsLaunching {
      - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
      */
     func launch(with credentials: DreamsCredentials, locale: Locale) {
-        launch(with: credentials, locale: locale, completion: nil)
+        launch(with: credentials, locale: locale, headers: nil, completion: nil)
     }
 
     /**
@@ -63,7 +65,36 @@ public extension DreamsLaunching {
 
      */
     func launch(with credentials: DreamsCredentials, locale: Locale, location: String) {
-        launch(with: credentials, locale: locale, location: location, completion: nil)
+        launch(with: credentials, locale: locale, headers: nil, location: location, completion: nil)
+    }
+    
+    /**
+     This method MUST be called just after the DreamsViewController is presented, the Dreams interface will be launched for given credentials.
+
+     - parameter with: credentials - DreamsCredentials
+     - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
+
+     - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
+
+     */
+    func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil) {
+        launch(with: credentials, locale: locale, headers: headers, completion: nil)
+    }
+    
+    /**
+     This method MUST be called just after the DreamsViewController is presented, the Dreams interface will be launched for given credentials.
+
+     - parameter with: credentials - DreamsCredentials
+     - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
+     - parameter location: the host app can ask DreamsSDK to start Dreams with certain location
+
+     - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
+
+     */
+    func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil, location: String) {
+        launch(with: credentials, locale: locale, headers: headers, location: location, completion: nil)
     }
 }
 
@@ -82,6 +113,14 @@ public protocol LocaleUpdating: AnyObject {
      - parameter locale: Selected Locale
      */
     func update(locale: Locale)
+}
+
+public protocol HeaderUpdating: AnyObject {
+    /**
+     This method can be called at all times after the DreamsViewController is presented, the Dreams interface will send the headers with every request.
+     - parameter headers: Set optional HTTP headers
+     */
+    func update(headers: [String: String]?)
 }
 
 public protocol DreamsDelegateUsing: AnyObject {
@@ -149,16 +188,17 @@ extension DreamsViewController: DreamsLaunching {
      
      - parameter idToken: User idToken
      - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
      - parameter completion: Called when Dreams did launch successfuly or failed
     
      - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
         
      */
-    public func launch(with credentials: DreamsCredentials, locale: Locale, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
+    public func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
         guard Thread.isMainThread else {
             fatalError("Launch can be only called on main thread!")
         }
-        interaction.launch(credentials: credentials, locale: locale, location: nil, completion: completion)
+        interaction.launch(credentials: credentials, locale: locale, headers: headers, location: nil, completion: completion)
     }
 
     /**
@@ -167,13 +207,14 @@ extension DreamsViewController: DreamsLaunching {
      - parameter location: the host app can ask DreamsSDK to start Dreams with certain location
      - parameter with: credentials - DreamsCredentials
      - parameter locale: Selected Locale
+     - parameter headers: Set optional HTTP headers
      - parameter completion: Called when Dreams did launch successfuly or failed
 
      - Attention: This method MUST be called on main thread, when called from background threads it will crash to avoid undefined behaviour.
 
      */
-    public func launch(with credentials: DreamsCredentials, locale: Locale, location: String, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-        interaction.launch(credentials: credentials, locale: locale, location: location, completion: completion)
+    public func launch(with credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil, location: String, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
+        interaction.launch(credentials: credentials, locale: locale, headers: headers, location: location, completion: completion)
     }
 }
 
@@ -189,6 +230,19 @@ extension DreamsViewController: NavigatingToLocation {
      */
     public func navigateTo(location: String) {
         interaction.navigateTo(location: location)
+    }
+}
+
+// MARK: HeaderUpdating
+extension DreamsViewController: HeaderUpdating {
+    
+    /**
+     This method can be called at all times after the DreamsViewController is presented, the Dreams interface will send the headers with every request.
+     - parameter headers: Set optional HTTP headers
+     */
+    
+    public func update(headers: [String : String]?) {
+        interaction.update(headers: headers)
     }
 }
 

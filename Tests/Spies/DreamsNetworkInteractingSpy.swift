@@ -24,6 +24,8 @@ final class DreamsNetworkInteractingSpy: DreamsNetworkInteracting {
     var completions: [((Result<Void, DreamsLaunchingError>) -> Void)] = []
     var launchLocales: [Locale] = []
     var updateLocales: [Locale] = []
+    var launchHeaders: [[String: String]?] = []
+    var updateHeaders: [[String: String]?] = []
     
     func didLoad() {
         didLoadCount += 1
@@ -37,10 +39,15 @@ final class DreamsNetworkInteractingSpy: DreamsNetworkInteracting {
         useDelegates.append(delegate)
     }
     
-    func launch(credentials: DreamsCredentials, locale: Locale, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
+    func launch(credentials: DreamsCredentials, locale: Locale, headers: [String : String]?, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
         launchCredentials.append(credentials)
         launchLocales.append(locale)
         launchLocations.append(location)
+        
+        if let headers = headers {
+            launchHeaders.append(headers)
+        }
+        
         if let completion = completion {
             completions.append(completion)
         }
@@ -48,6 +55,10 @@ final class DreamsNetworkInteractingSpy: DreamsNetworkInteracting {
     
     func update(locale: Locale) {
         updateLocales.append(locale)
+    }
+    
+    func update(headers: [String : String]?) {
+        updateHeaders.append(headers)
     }
 
     func navigateTo(location: String) {

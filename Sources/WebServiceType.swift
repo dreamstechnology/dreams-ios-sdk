@@ -18,6 +18,11 @@ protocol WebServiceType: WKScriptMessageHandler, WKNavigationDelegate  {
      The object that acts as the delegate of the web service.
      */
     var delegate: WebServiceDelegate? { get set }
+    
+    /**
+     Set headers that will be sent with every request
+     */
+    func set(headers: [String: String]?)
 
     /**
      Load URL with HTTP method and an optional body.

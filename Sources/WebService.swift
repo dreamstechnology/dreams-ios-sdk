@@ -25,6 +25,11 @@ final class WebService: NSObject, WebServiceType {
     
     private var completion: ((Result<Void, DreamsLaunchingError>) -> Void)?
     private var isRunning: Bool = false
+    private var headers: [String: String]? = nil
+    
+    func set(headers: [String : String]?) {
+        self.headers = headers
+    }
 
     func load(url: URL, method: String, body: JSONObject? = nil, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
         guard !isRunning else {
@@ -36,9 +41,8 @@ final class WebService: NSObject, WebServiceType {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = method
-        urlRequest.addValue(Constants.jsonMimetype,
-                            forHTTPHeaderField: Constants.headerContentType)
-
+        urlRequest.addValue(Constants.jsonMimetype, forHTTPHeaderField: Constants.headerContentType)
+        
         if let httpBody = body {
             urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: httpBody)
         }
@@ -108,6 +112,32 @@ extension WebService: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         handleError(.requestFailure(error as NSError))
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let headers = headers else {
+            decisionHandler(.allow)
+            return
+        }
+        
+        let existingHeaders = navigationAction.request.allHTTPHeaderFields ?? [:]
+        let hasRequiredHeaders = headers.allSatisfy { key, value in
+            existingHeaders[key] == value
+        }
+        
+        guard !hasRequiredHeaders else {
+            decisionHandler(.allow)
+            return
+        }
+
+        var modifiedRequest = navigationAction.request
+        
+        for (key, value) in headers {
+            modifiedRequest.addValue(value, forHTTPHeaderField: key)
+        }
+        
+        delegate?.webServiceDidPrepareRequest(service: self, urlRequest: modifiedRequest)
+        decisionHandler(.cancel)
     }
     
     private func handleError(_ error: DreamsLaunchingError) {
