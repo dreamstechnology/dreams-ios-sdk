@@ -50,13 +50,17 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
         self.navigation = navigation
     }
 
-    public func launch(credentials: DreamsCredentials, locale: Locale, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-        loadBaseURL(credentials: credentials, locale: locale, location: location, completion: completion)
+    public func launch(credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
+        loadBaseURL(credentials: credentials, locale: locale, headers: headers, location: location, completion: completion)
     }
 
     public func update(locale: Locale) {
         let jsonObject: JSONObject = ["locale": locale.identifier]
         send(event: .updateLocale, with: jsonObject)
+    }
+    
+    public func update(headers: [String : String]?) {
+        webService.set(headers: headers)
     }
 
     public func navigateTo(location: String) {
@@ -172,8 +176,7 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
         navigation?.present(viewController: activity)
     }
 
-    private func loadBaseURL(credentials: DreamsCredentials, locale: Locale, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-
+    private func loadBaseURL(credentials: DreamsCredentials, locale: Locale, headers: [String: String]?, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
         let body = [
             "token": credentials.idToken,
             "client_id": configuration.clientId,
@@ -190,6 +193,7 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
 
         let verifyTokenURL = urlComps?.url ?? configuration.baseURL
 
+        webService.set(headers: headers)
         webService.load(url: verifyTokenURL, method: "POST", body: body, completion: completion)
     }
 }

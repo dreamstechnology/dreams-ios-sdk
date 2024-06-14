@@ -84,6 +84,35 @@ class DreamsViewControllerTests: XCTestCase {
         XCTAssertEqual(interaction.launchLocales.first!, locale)
         XCTAssertEqual(interaction.launchLocations.first!, "drop_coffee")
     }
+    
+    func testLaunchWithHeaders() {
+        subject = DreamsViewController(interaction: interaction)
+        let idToken = "aaa"
+        let credentials = DreamsCredentials(idToken: idToken)
+        let locale = Locale(identifier: "sv_SE")
+        let headers: [String: String] = ["Custom-Header": "header-value"]
+        
+        subject.launch(with: credentials, locale: locale, headers: headers)
+        
+        XCTAssertEqual(interaction.launchHeaders.count, 1)
+        XCTAssertEqual(interaction.launchHeaders.first, headers)
+    }
+    
+    func testLaunchWithHeadersAndLocation() {
+        subject = DreamsViewController(interaction: interaction)
+        let idToken = "aaa"
+        let credentials = DreamsCredentials(idToken: idToken)
+        let locale = Locale(identifier: "sv_SE")
+        let headers: [String: String] = ["Custom-Header": "header-value"]
+        
+        subject.launch(with: credentials, locale: locale, headers: headers, location: "drop_coffee")
+        
+        XCTAssertEqual(interaction.launchHeaders.count, 1)
+        XCTAssertEqual(interaction.launchHeaders.first, headers)
+        XCTAssertEqual(interaction.launchLocales.count, 1)
+        XCTAssertEqual(interaction.launchLocales.first!, locale)
+        XCTAssertEqual(interaction.launchLocations.first!, "drop_coffee")
+    }
 
     func testUpdateLocale() {
         subject = DreamsViewController(interaction: interaction)
@@ -102,5 +131,12 @@ class DreamsViewControllerTests: XCTestCase {
 
         XCTAssertEqual(interaction.navigateToLocations.count, 1)
         XCTAssertEqual(interaction.navigateToLocations.first!, "drop_coffee")
+    }
+    
+    func testUpdateHeaders() {
+        subject = DreamsViewController(interaction: interaction)
+        
+        subject.update(headers: ["Custom-Header": "header-value"])
+        XCTAssertEqual(interaction.updateHeaders.count, 1)
     }
 }

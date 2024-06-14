@@ -19,11 +19,16 @@ class WebServiceSpy: NSObject, WebServiceType {
     
     var events: [Request] = []
     var jsonObjects: [JSONObject] = []
+    var headerObjects: [[String: String]?] = []
     var completions: [((Result<Void, DreamsLaunchingError>) -> Void)] = []
     
     var load_urls: [URL] = []
     var load_methods: [String] = []
     var load_bodys: [JSONObject] = []
+    
+    func set(headers: [String : String]?) {
+        headerObjects.append(headers)
+    }
     
     func load(url: URL, method: String, body: JSONObject?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
         load_urls.append(url)

@@ -189,7 +189,6 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         XCTAssertEqual(NSDictionary(dictionary: service.jsonObjects.first!), NSDictionary(dictionary: jsonObject))
     }
 
-
     func test_webServiceDidReceiveMessage_onIdTokenDidExpire_delegatePerformedACall() {
         let event = ResponseEvent.onIdTokenDidExpire
         let token = "bbb"
@@ -241,28 +240,28 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         XCTAssertEqual(NSDictionary(dictionary: service.jsonObjects.first!), NSDictionary(dictionary: jsonObjectReturned))
     }
 
-     func test_webServiceDidReceiveMessage_onAccountRequested_delegatePerformedACallSucceeded() {
+    func test_webServiceDidReceiveMessage_onAccountRequested_delegatePerformedACallSucceeded() {
         let event = ResponseEvent.onAccountRequested
-         let jsonObject: [String: Any] =  [
+            let jsonObject: [String: Any] =  [
             "requestId": "test request id",
             "dream": [
                 "type": "dream",
-                 "id": "uuid",
-                 "name": "name",
-                 "target_amount": [
+                    "id": "uuid",
+                    "name": "name",
+                    "target_amount": [
                         "cents": 200,
                         "currency": "SEK"
-                 ],
-                 "target_date": "2029-01-01",
-                 "user": [
+                    ],
+                    "target_date": "2029-01-01",
+                    "user": [
                     "type": "user",
                     "id": "test-uuid",
                     "externalId": "test_extuuid",
-                 ],
-           ]
+                    ],
+            ]
         ]
-         
-         
+            
+            
         subject.webServiceDidReceiveMessage(service: service, event: event, jsonObject: jsonObject)
 
         let jsonObjectReturned =  ["requestId": "test request id"]
@@ -310,7 +309,7 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         XCTAssertEqual(service.events.first, event)
     }
 
-    func test_uptadeLocale_passedToService() {
+    func test_updateLocale_passedToService() {
         let event = Request.updateLocale
 
         subject.update(locale: Locale(identifier: "sv_SE"))
@@ -328,5 +327,11 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         XCTAssertEqual(service.events.first, event)
         XCTAssertEqual(service.jsonObjects.count, 1)
         XCTAssertEqual((service.jsonObjects.first as? [String: String])?["location"], "drop_coffee")
+    }
+    
+    func test_update_headers() {
+        subject.update(headers: ["Custom-Header": "header-value"])
+        XCTAssertEqual(service.headerObjects.count, 1)
+        XCTAssertEqual(service.headerObjects.first, ["Custom-Header": "header-value"])
     }
 }
