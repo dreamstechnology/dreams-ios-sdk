@@ -141,8 +141,17 @@ public protocol ViewControllerPresenting: AnyObject {
 public class DreamsViewController: UIViewController {
 
     private lazy var webView: WKWebView = {
-        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        let configuration = WKWebViewConfiguration()
+        let userContentController = WKUserContentController()
+        let jsCode = WebServiceJS.additionalHTTPHeaders.jsString
+        
+        let userScript = WKUserScript(source: jsCode, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        userContentController.addUserScript(userScript)
+        configuration.userContentController = userContentController
+        
+        let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.translatesAutoresizingMaskIntoConstraints = false
+    
         return webView
     }()
 

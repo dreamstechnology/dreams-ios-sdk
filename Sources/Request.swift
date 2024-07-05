@@ -23,4 +23,5 @@ enum Request: String {
     case transferConsentCancelled
     case accountRequestedSucceeded
     case accountRequestedFailed
+    case setAdditionalHeaders
 }

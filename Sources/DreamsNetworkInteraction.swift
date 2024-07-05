@@ -60,7 +60,7 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
     }
     
     public func update(headers: [String : String]?) {
-        webService.set(headers: headers)
+        send(event: .setAdditionalHeaders, with: headers)
     }
 
     public func navigateTo(location: String) {
