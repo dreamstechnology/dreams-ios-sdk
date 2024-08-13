@@ -30,18 +30,28 @@ enum WebServiceJS: String {
                                         
                 const originalFetch = window.fetch;
                                         
-                window.fetch = function(input, init) {
-                    if (!init) {
-                        init = {};
+                window.fetch = function(resource, options) {
+                    if (!options) {
+                        options = {};
                     }
 
-                    if (!init.headers) {
-                        init.headers = {};
+                    if (!options.headers) {
+                        options.headers = {};
                     }
+
                     for (const header in window.additionalHeaders) {
-                        init.headers[header] = window.additionalHeaders[header];
+                        options.headers[header] = window.additionalHeaders[header];
                     }
-                    return originalFetch(input, init);
+
+                    if (resource instanceof Request) {
+                        options.headers = Object.assign(
+                            {},
+                            Object.fromEntries(resource.headers.entries()),
+                            options.headers
+                        );
+                    }
+
+                    return originalFetch(resource, options);
                 };
             })();
         """
