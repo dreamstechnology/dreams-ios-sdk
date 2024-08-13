@@ -92,6 +92,12 @@ extension WebService {
 // MARK: WKNavigationDelegate
 
 extension WebService: WKNavigationDelegate {
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard let headers else { return }
+        prepareRequestMessage(event: .setAdditionalHeaders, with: headers)
+    }
+    
     func webView(_ webView: WKWebView, decidePolicyFor
                  navigationResponse: WKNavigationResponse,
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {

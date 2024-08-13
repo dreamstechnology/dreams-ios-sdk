@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Dreams
+import DreamsEnterpriseSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {

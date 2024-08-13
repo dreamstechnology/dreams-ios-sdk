@@ -1,5 +1,5 @@
 import UIKit
-import Dreams
+import DreamsEnterpriseSDK
 
 //
 // This ViewController is initialized and presented by InterfaceBuilder (Main.storyboard)
@@ -62,6 +62,14 @@ class ViewController: UIViewController {
 // Example implementation of DreamsDelegate
 //
 extension ViewController: DreamsDelegate {
+    func handleDreamsTransferConsentRequested(requestId: String, consentId: String, completion: @escaping (Result<DreamsEnterpriseSDK.TransferConsentSuccess, DreamsEnterpriseSDK.TransferConsentError>) -> Void) {
+        
+    }
+    
+    func handleDreamsAccountRequested(requestId: String, dream: [String : Any], completion: @escaping (Result<DreamsEnterpriseSDK.AccountRequestedSuccess, DreamsEnterpriseSDK.AccountRequestedError>) -> Void) {
+        
+    }
+    
     func handleDreamsCredentialsExpired(completion: @escaping (DreamsCredentials) -> Void) {
         print("IdToken expired event received")
         
