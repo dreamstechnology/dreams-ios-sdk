@@ -153,9 +153,9 @@ public class DreamsViewController: UIViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
 
         // Handy for debugging:
-        // if #available(iOS 16.4, *) {
-        //     webView.isInspectable = true
-        // }
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
 
         return webView
     }()

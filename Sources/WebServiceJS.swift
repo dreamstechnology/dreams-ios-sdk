@@ -51,6 +51,8 @@ enum WebServiceJS: String {
                         );
                     }
 
+                    console.log('patched window.fetch with', resource, options);
+
                     return originalFetch(resource, options);
                 };
             })();
