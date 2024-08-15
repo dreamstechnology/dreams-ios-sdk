@@ -141,21 +141,13 @@ public protocol ViewControllerPresenting: AnyObject {
 public class DreamsViewController: UIViewController {
 
     private lazy var webView: WKWebView = {
-        let configuration = WKWebViewConfiguration()
-        let userContentController = WKUserContentController()
-        let jsCode = WebServiceJS.additionalHTTPHeaders.jsString
-        
-        let userScript = WKUserScript(source: jsCode, injectionTime: .atDocumentStart, forMainFrameOnly: false)
-        userContentController.addUserScript(userScript)
-        configuration.userContentController = userContentController
-        
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
         webView.translatesAutoresizingMaskIntoConstraints = false
 
         // Handy for debugging:
-        // if #available(iOS 16.4, *) {
-        //     webView.isInspectable = true
-        // }
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
 
         return webView
     }()
