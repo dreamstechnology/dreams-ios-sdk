@@ -39,15 +39,25 @@ final class DreamsNetworkInteractingSpy: DreamsNetworkInteracting {
         useDelegates.append(delegate)
     }
     
-    func launch(credentials: DreamsCredentials, locale: Locale, headers: [String : String]?, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
+    public func launch(
+        credentials: DreamsCredentials,
+        location: String?,
+        locale: Locale?,
+        theme: String?,
+        timezone: String?,
+        headers: [String: String]? = nil,
+        completion: ((Result<Void, DreamsLaunchingError>) -> Void)?
+    ) {
         launchCredentials.append(credentials)
-        launchLocales.append(locale)
-        launchLocations.append(location)
-        
+        if let location = location {
+            launchLocations.append(location)
+        }
+        if let locale = locale {
+            launchLocales.append(locale)
+        }
         if let headers = headers {
             launchHeaders.append(headers)
         }
-        
         if let completion = completion {
             completions.append(completion)
         }
