@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = "DreamsEnterpriseSDK"
-  s.version        = "1.2.3-rc.2"
+  s.version        = "1.3.0-rc.1"
   s.summary        = "Dreams Enterprise iOS SDK"
 
   s.homepage       = "http://dreamstech.com"

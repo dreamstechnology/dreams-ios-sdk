@@ -11,7 +11,7 @@ class ViewController: UIViewController {
         viewController.use(delegate: self)
         viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true) {
-            viewController.launch(with: userCredentials, locale: Locale.current) { result in
+            viewController.launch(with: userCredentials, locale: Locale(identifier: "en")) { result in
                 switch result {
                 case .success:
                     () // Dreams did launch successfully
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         viewController.use(delegate: self)
         viewController.modalPresentationStyle = .fullScreen
         present(viewController, animated: true) {
-            viewController.launch(with: userCredentials, locale: Locale.current, location: "/example/location") { result in
+            viewController.launch(with: userCredentials, locale: Locale(identifier: "en"), location: "/example/location") { result in
                 switch result {
                 case .success:
                     () // Dreams did launch successfully
