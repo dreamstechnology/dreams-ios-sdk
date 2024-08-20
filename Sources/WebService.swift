@@ -115,11 +115,8 @@ extension WebService: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        print("=== WebService decidePolicyFor ===")
-        print(navigationAction.request.url!)
 
         guard let headers = headers else {
-            print("No headers to set. Allowing.")
             decisionHandler(.allow)
             return
         }
@@ -130,7 +127,6 @@ extension WebService: WKNavigationDelegate {
         }
         
         guard !hasRequiredHeaders else {
-            print("Already has required headers. Allowing.")
             decisionHandler(.allow)
             return
         }
@@ -140,7 +136,6 @@ extension WebService: WKNavigationDelegate {
         for (key, value) in headers {
             modifiedRequest.addValue(value, forHTTPHeaderField: key)
         }
-        print("Does not have headers. Modifying request...")
         delegate?.webServiceDidPrepareRequest(service: self, urlRequest: modifiedRequest)
         decisionHandler(.cancel)
     }
