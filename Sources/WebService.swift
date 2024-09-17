@@ -87,6 +87,7 @@ extension WebService {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         handleResponseMessage(name: message.name, body: message.body)
     }
+    
 }
 
 // MARK: WKNavigationDelegate
