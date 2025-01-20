@@ -50,8 +50,24 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
         self.navigation = navigation
     }
 
-    public func launch(credentials: DreamsCredentials, locale: Locale, headers: [String: String]? = nil, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-        loadBaseURL(credentials: credentials, locale: locale, headers: headers, location: location, completion: completion)
+    public func launch(
+        credentials: DreamsCredentials,
+        location: String?,
+        locale: Locale?,
+        theme: String?,
+        timezone: String?,
+        headers: [String: String]? = nil,
+        completion: ((Result<Void, DreamsLaunchingError>) -> Void)?
+    ) {
+        loadBaseURL(
+            credentials: credentials,
+            location: location,
+            locale: locale,
+            theme: theme,
+            timezone: timezone,
+            headers: headers,
+            completion: completion
+        )
     }
 
     public func update(locale: Locale) {
@@ -61,7 +77,7 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
     
     public func update(headers: [String : String]?) {
         webService.set(headers: headers)
-        send(event: .setAdditionalHeaders, with: headers)
+        // send(event: .setAdditionalHeaders, with: headers)
     }
 
     public func navigateTo(location: String) {
@@ -177,24 +193,34 @@ public final class DreamsNetworkInteraction: DreamsNetworkInteracting {
         navigation?.present(viewController: activity)
     }
 
-    private func loadBaseURL(credentials: DreamsCredentials, locale: Locale, headers: [String: String]?, location: String?, completion: ((Result<Void, DreamsLaunchingError>) -> Void)?) {
-        let body = [
+    private func loadBaseURL(
+        credentials: DreamsCredentials,
+        location: String?,
+        locale: Locale?,
+        theme: String?,
+        timezone: String?,
+        headers: [String: String]?,
+        completion: ((Result<Void, DreamsLaunchingError>) -> Void)?
+    ) {
+        var body = [
             "token": credentials.idToken,
             "client_id": configuration.clientId,
-            "locale": localeFormatter.format(locale: locale, format: .bcp47),
         ]
-
-        var urlComps = URLComponents(url: configuration.baseURL.appendingPathComponent("/users/verify_token"), resolvingAgainstBaseURL: true)
-
-        if let location = location {
-            var queryItems: [URLQueryItem] = []
-            queryItems.append(URLQueryItem(name: "location", value: location))
-            urlComps?.queryItems = queryItems
+        if let location = location, !location.isEmpty {
+            body["location"] = location
         }
-
-        let verifyTokenURL = urlComps?.url ?? configuration.baseURL
-
+        if let locale = locale {
+            body["locale"] = localeFormatter.format(locale: locale, format: .bcp47)
+        }
+        if let theme = theme, !theme.isEmpty {
+            body["theme"] = theme
+        }
+        if let timezone = timezone, !timezone.isEmpty {
+            body["timezone"] = timezone
+        }
         webService.set(headers: headers)
+
+        let verifyTokenURL = configuration.baseURL.appendingPathComponent("/users/verify_token")
         webService.load(url: verifyTokenURL, method: "POST", body: body, completion: completion)
     }
 }

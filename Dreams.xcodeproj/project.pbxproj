@@ -40,7 +40,6 @@
 		FA73781425876E5800B662F3 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73781325876E5800B662F3 /* Request.swift */; };
 		FA73781825876E7600B662F3 /* ResponseEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA73781725876E7600B662F3 /* ResponseEvent.swift */; };
 		FAABFF482588F2BE00302A40 /* DreamsNetworkInteractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7378342588F0B300B662F3 /* DreamsNetworkInteractionTests.swift */; };
-		FAC9F2FB2C3D0E9500C95CCD /* WebServiceJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9F2FA2C3D0E9500C95CCD /* WebServiceJS.swift */; };
 		FAF52E00252F2ADE0099D38F /* WebServiceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF52DFF252F2ADE0099D38F /* WebServiceDelegate.swift */; };
 		FAF52E04252F2FC90099D38F /* WebServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF52E03252F2FC90099D38F /* WebServiceType.swift */; };
 		FAF52E0A252F36A80099D38F /* DreamsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF52E09252F36A80099D38F /* DreamsDelegate.swift */; };
@@ -59,7 +58,7 @@
 /* Begin PBXFileReference section */
 		001D0418294B29EB001B224E /* TransferConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferConsent.swift; sourceTree = "<group>"; };
 		00DB6AA429C84D4500FA8E34 /* AccountRequested.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRequested.swift; sourceTree = "<group>"; };
-		1A02FC0025C19DBC0080A67E /* DreamsEnterpriseSDK.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DreamsEnterpriseSDK.podspec; sourceTree = "<group>"; };
+		1A02FC0025C19DBC0080A67E /* DreamsEnterpriseSDK.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DreamsEnterpriseSDK.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		1A0C2C8925AC7F9F00279C0C /* DreamsNetworkInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsNetworkInteraction.swift; sourceTree = "<group>"; };
 		1A0C2C8D25AC7FD900279C0C /* DreamsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsConfiguration.swift; sourceTree = "<group>"; };
 		1A0C2C9B25AC9C9100279C0C /* DreamsCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsCredentials.swift; sourceTree = "<group>"; };
@@ -95,7 +94,6 @@
 		FA73781325876E5800B662F3 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		FA73781725876E7600B662F3 /* ResponseEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseEvent.swift; sourceTree = "<group>"; };
 		FA7378342588F0B300B662F3 /* DreamsNetworkInteractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsNetworkInteractionTests.swift; sourceTree = "<group>"; };
-		FAC9F2FA2C3D0E9500C95CCD /* WebServiceJS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceJS.swift; sourceTree = "<group>"; };
 		FAF52DFF252F2ADE0099D38F /* WebServiceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceDelegate.swift; sourceTree = "<group>"; };
 		FAF52E03252F2FC90099D38F /* WebServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceType.swift; sourceTree = "<group>"; };
 		FAF52E09252F36A80099D38F /* DreamsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamsDelegate.swift; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 				FA343FEF251CDD950073F33E /* Dreams.h */,
 				FAF52E03252F2FC90099D38F /* WebServiceType.swift */,
 				FAF52DFF252F2ADE0099D38F /* WebServiceDelegate.swift */,
-				FAC9F2FA2C3D0E9500C95CCD /* WebServiceJS.swift */,
 				1A12D2CD25C825480022A73B /* DreamsNetworkInteracting.swift */,
 				1A0C2CCD25AF59A700279C0C /* WebViewProtocol.swift */,
 				FA482E9F251CE91F00D6006B /* Dreams.swift */,
@@ -331,7 +328,6 @@
 				FA73781825876E7600B662F3 /* ResponseEvent.swift in Sources */,
 				1A0C2C8A25AC7F9F00279C0C /* DreamsNetworkInteraction.swift in Sources */,
 				00DB6AA529C84D4500FA8E34 /* AccountRequested.swift in Sources */,
-				FAC9F2FB2C3D0E9500C95CCD /* WebServiceJS.swift in Sources */,
 				FAF52E04252F2FC90099D38F /* WebServiceType.swift in Sources */,
 				1A0C2CCE25AF59A700279C0C /* WebViewProtocol.swift in Sources */,
 				FAF52E0A252F36A80099D38F /* DreamsDelegate.swift in Sources */,

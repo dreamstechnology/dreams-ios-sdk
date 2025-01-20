@@ -16,7 +16,11 @@ public protocol WebViewProtocol: AnyObject {
     var navigationDelegate: WKNavigationDelegate? { get set }
     func add(_ scriptMessageHandler: WKScriptMessageHandler, name: String)
     func load(_ request: URLRequest) -> WKNavigation?
+#if compiler(>=6)
+    func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?)
+#else
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
+#endif
 }
 
 extension WebViewProtocol {

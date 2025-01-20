@@ -66,7 +66,15 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         let localeId = "sv"
         let locale = Locale(identifier: localeId)
 
-        subject.launch(credentials: DreamsCredentials(idToken: "idToken"), locale: locale)
+        subject.launch(
+            credentials: DreamsCredentials(idToken: "idToken"),
+            location: nil,
+            locale: locale,
+            theme: nil,
+            timezone: nil,
+            headers: nil,
+            completion: nil
+        )
 
         XCTAssertEqual(localeFormatter.formatsGiven.count, 1)
         XCTAssertEqual(localeFormatter.localesGiven.count, 1)
@@ -77,7 +85,15 @@ final class DreamsNetworkInteractionTests: XCTestCase {
     func test_launch_calledCorrectRequest() {
         localeFormatter.returnString = "sv"
 
-        subject.launch(credentials: DreamsCredentials(idToken: "idToken"), locale: Locale(identifier: "sv"))
+        subject.launch(
+            credentials: DreamsCredentials(idToken: "idToken"),
+            location: nil,
+            locale: Locale(identifier: "sv"),
+            theme: nil,
+            timezone: nil,
+            headers: nil,
+            completion: nil
+        )
 
         let expectedBody: [String: Any] = ["token": "idToken", "locale": "sv", "client_id": "clientId"]
         let httpBody = service.load_bodys.first!
@@ -89,17 +105,32 @@ final class DreamsNetworkInteractionTests: XCTestCase {
         XCTAssertEqual(NSDictionary(dictionary: expectedBody), NSDictionary(dictionary: httpBody))
     }
 
-    func test_launchWithLocation_calledCorrectRequest() {
+    func test_launchWithAllParams_calledCorrectRequest() {
         localeFormatter.returnString = "sv"
 
-        subject.launch(credentials: DreamsCredentials(idToken: "idToken"), locale: Locale(identifier: "sv"), location: "drybones", completion: nil)
+        subject.launch(
+            credentials: DreamsCredentials(idToken: "idToken"),
+            location: "drybones",
+            locale: Locale(identifier: "sv"),
+            theme: "dark",
+            timezone: "Tokyo",
+            headers: nil,
+            completion: nil
+        )
 
-        let expectedBody: [String: Any] = ["token": "idToken", "locale": "sv", "client_id": "clientId"]
+        let expectedBody: [String: Any] = [
+            "token": "idToken",
+            "locale": "sv",
+            "client_id": "clientId",
+            "location": "drybones",
+            "theme": "dark",
+            "timezone": "Tokyo",
+        ]
         let httpBody = service.load_bodys.first!
         XCTAssertEqual(service.load_urls.count, 1)
         XCTAssertEqual(service.load_bodys.count, 1)
         XCTAssertEqual(service.load_methods.count, 1)
-        XCTAssertEqual(service.load_urls.first?.absoluteString, "https://www.dreamstech.com/users/verify_token?location=drybones")
+        XCTAssertEqual(service.load_urls.first?.absoluteString, "https://www.dreamstech.com/users/verify_token")
         XCTAssertEqual(service.load_methods.first, "POST")
         XCTAssertEqual(NSDictionary(dictionary: expectedBody), NSDictionary(dictionary: httpBody))
     }
@@ -109,7 +140,15 @@ final class DreamsNetworkInteractionTests: XCTestCase {
 
         }
 
-        subject.launch(credentials: DreamsCredentials(idToken: "idToken"), locale: Locale(identifier: "sv_SE"), location: nil, completion: completion)
+        subject.launch(
+            credentials: DreamsCredentials(idToken: "idToken"),
+            location: nil,
+            locale: Locale(identifier: "sv_SE"),
+            theme: nil,
+            timezone: nil,
+            headers: nil,
+            completion: completion
+        )
 
         XCTAssertEqual(service.completions.count, 1)
     }
@@ -120,7 +159,16 @@ final class DreamsNetworkInteractionTests: XCTestCase {
             called = true
         }
 
-        subject.launch(credentials: DreamsCredentials(idToken: "idToken"), locale: Locale(identifier: "sv_SE"), location: nil, completion: completion)
+        subject.launch(
+            credentials: DreamsCredentials(idToken: "idToken"),
+            location: nil,
+            locale: Locale(identifier: "sv_SE"),
+            theme: nil,
+            timezone: nil,
+            headers: nil,
+            completion: completion
+        )
+
         service.completions.first!(.success(()))
 
         XCTAssertTrue(called)

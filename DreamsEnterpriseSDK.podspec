@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = "DreamsEnterpriseSDK"
-  s.version        = "1.2.2"
+  s.version        = "1.3.0"
   s.summary        = "Dreams Enterprise iOS SDK"
 
   s.homepage       = "http://dreamstech.com"
@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
   s.source         = { :git => "https://github.com/dreamstechnology/dreams-ios-sdk.git", :tag => "#{s.version}" }
   s.source_files   = "Sources/*.swift"
   s.frameworks     = "WebKit"
-  s.swift_version  = "5.0"
+  s.swift_version  = '5.0'
 end
