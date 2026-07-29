@@ -39,7 +39,13 @@ final class WebViewSpy: WebViewProtocol {
         return nil
     }
     
+#if compiler(>=6)
+    func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?) {
+        javaScriptStrings.append(javaScriptString)
+    }
+#else
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?) {
         javaScriptStrings.append(javaScriptString)
     }
+#endif
 }

@@ -96,10 +96,13 @@ extension WebService: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor
                  navigationResponse: WKNavigationResponse,
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-        guard let response = navigationResponse.response as? HTTPURLResponse else {
-            decisionHandler(.allow)
-            return
+        if let response = navigationResponse.response as? HTTPURLResponse {
+            handleNavigationHTTPResponse(response)
         }
+        decisionHandler(.allow)
+    }
+
+    func handleNavigationHTTPResponse(_ response: HTTPURLResponse) {
         switch response.statusCode {
         case 200...299:
             handleSuccess()
@@ -108,7 +111,6 @@ extension WebService: WKNavigationDelegate {
         default:
             handleError(.httpErrorStatus(response.statusCode))
         }
-        decisionHandler(.allow)
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

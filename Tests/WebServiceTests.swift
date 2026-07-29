@@ -90,19 +90,15 @@ class WebServiceTests: XCTestCase {
         let service = WebService()
         service.delegate = spyDelegate
         let mockURL = URL(string: "https://dreamstech.com")!
-        let webView = WKWebView()
-        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: 200, httpVersion: nil, headerFields: nil)
-        let navigationResponse = FakeResponseMock(fakeResponse: urlResponse!)
-        
+        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
         var resultGiven: Result<Void, DreamsLaunchingError>? = nil
         service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
             resultGiven = result
         }
-      
-        service.webView(webView, decidePolicyFor: navigationResponse) { policy in
-            // Ignored
-        }
-        
+
+        service.handleNavigationHTTPResponse(urlResponse)
+
         guard case .success = resultGiven else {
             XCTFail()
             return
@@ -114,19 +110,15 @@ class WebServiceTests: XCTestCase {
         let service = WebService()
         service.delegate = spyDelegate
         let mockURL = URL(string: "https://dreamstech.com")!
-        let webView = WKWebView()
-        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: 422, httpVersion: nil, headerFields: nil)
-        let navigationResponse = FakeResponseMock(fakeResponse: urlResponse!)
-        
+        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: 422, httpVersion: nil, headerFields: nil)!
+
         var resultGiven: Result<Void, DreamsLaunchingError>? = nil
         service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
             resultGiven = result
         }
-      
-        service.webView(webView, decidePolicyFor: navigationResponse) { policy in
-            // Ignored
-        }
-        
+
+        service.handleNavigationHTTPResponse(urlResponse)
+
         if case let .failure(reason) = resultGiven {
             XCTAssertEqual(reason, DreamsLaunchingError.invalidCredentials)
         } else {
@@ -139,27 +131,22 @@ class WebServiceTests: XCTestCase {
         let service = WebService()
         service.delegate = spyDelegate
         let mockURL = URL(string: "https://dreamstech.com")!
-        let webView = WKWebView()
-        let status = 500
-        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: status, httpVersion: nil, headerFields: nil)
-        let navigationResponse = FakeResponseMock(fakeResponse: urlResponse!)
-        
+        let expectedStatus = 500
+        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: expectedStatus, httpVersion: nil, headerFields: nil)!
+
         var resultGiven: Result<Void, DreamsLaunchingError>? = nil
         service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
             resultGiven = result
         }
-      
-        service.webView(webView, decidePolicyFor: navigationResponse) { policy in
-            // Ignored
-        }
-        
+
+        service.handleNavigationHTTPResponse(urlResponse)
+
         if case let .failure(reason) = resultGiven {
-            if case let .httpErrorStatus(status) = reason {
-                XCTAssertEqual(status, status)
+            if case let .httpErrorStatus(statusCode) = reason {
+                XCTAssertEqual(statusCode, expectedStatus)
             } else {
                 XCTFail()
             }
-           
         } else {
             XCTFail()
         }
