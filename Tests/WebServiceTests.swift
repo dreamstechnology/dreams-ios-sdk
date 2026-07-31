@@ -151,6 +151,43 @@ class WebServiceTests: XCTestCase {
             XCTFail()
         }
     }
+
+    func test_decidePolicy_forHTTPResponse_allowsAndCompletesSuccess() {
+        let service = WebService()
+        let mockURL = URL(string: "https://dreamstech.com")!
+        let urlResponse = HTTPURLResponse(url: mockURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
+
+        var resultGiven: Result<Void, DreamsLaunchingError>? = nil
+        service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
+            resultGiven = result
+        }
+
+        var policy: WKNavigationResponsePolicy?
+        service.decidePolicy(for: urlResponse) { policy = $0 }
+
+        XCTAssertEqual(policy, .allow)
+        guard case .success = resultGiven else {
+            XCTFail()
+            return
+        }
+    }
+
+    func test_decidePolicy_forNonHTTPResponse_allowsWithoutCompletion() {
+        let service = WebService()
+        let mockURL = URL(string: "https://dreamstech.com")!
+        let urlResponse = URLResponse(url: mockURL, mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+
+        var resultGiven: Result<Void, DreamsLaunchingError>? = nil
+        service.load(url: mockURL, method: "POST", body: ["test": "test"]) { result in
+            resultGiven = result
+        }
+
+        var policy: WKNavigationResponsePolicy?
+        service.decidePolicy(for: urlResponse) { policy = $0 }
+
+        XCTAssertEqual(policy, .allow)
+        XCTAssertNil(resultGiven)
+    }
     
     func test_loadURL_failedNavigation_requestFailure() {
         let spyDelegate = WebServiceDelegateSpy()

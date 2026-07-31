@@ -96,8 +96,14 @@ extension WebService: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor
                  navigationResponse: WKNavigationResponse,
                  decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
-        if let response = navigationResponse.response as? HTTPURLResponse {
-            handleNavigationHTTPResponse(response)
+        decidePolicy(for: navigationResponse.response, decisionHandler: decisionHandler)
+    }
+
+    /// Testable entry point for navigation-response policy (avoids subclassing `WKNavigationResponse` on iOS 26).
+    func decidePolicy(for response: URLResponse,
+                      decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        if let httpResponse = response as? HTTPURLResponse {
+            handleNavigationHTTPResponse(httpResponse)
         }
         decisionHandler(.allow)
     }

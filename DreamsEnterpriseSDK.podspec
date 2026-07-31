@@ -12,5 +12,5 @@ Pod::Spec.new do |s|
   s.source_files   = "Sources/*.swift"
   s.resource_bundles = { 'DreamsEnterpriseSDK' => ['Sources/PrivacyInfo.xcprivacy'] }
   s.frameworks     = "WebKit"
-  s.swift_version  = '5.9'
+  s.swift_version  = '5.0'
 end
