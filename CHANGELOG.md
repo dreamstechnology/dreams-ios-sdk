@@ -28,6 +28,19 @@ All notable changes to this library will be documented here.
   hardcoded to `1.0`, so crash reports and binary metadata showed the wrong
   SDK version.
 * Fastlane test lane targets a current simulator instead of iPhone 8.
+* Fixed the `DreamsTests` scheme, which had an empty `BuildAction`. Building it
+  from the command line failed; only `xcodebuild test` worked.
+
+### Removed
+
+* Deleted `Tests/Mocks/FakeResponseMock.swift`. It subclassed
+  `WKNavigationResponse` to fake HTTP responses in tests. On iOS 26 that
+  subclassing terminates the test runner, so the affected tests were rewritten
+  to call `handleNavigationHTTPResponse(_:)` directly and the mock was left
+  unused. `WKNavigationResponse` has no public initializer and was never
+  intended to be subclassed, so this is likely deliberate hardening by Apple
+  rather than a regression — the approach should be considered unavailable
+  going forward, not temporarily broken.
 
 ### Notes
 
