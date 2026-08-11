@@ -8,27 +8,63 @@
 ![Swift5](https://img.shields.io/badge/%20in-swift%205.0-orange.svg)
 
 ## Requirements
-- iOS 10.3+
+- iOS 15.0+
 - Swift 5.0+
+
+## Breaking changes in 2.0.0
+
+- **Minimum deployment target raised from iOS 10.3 to iOS 15.0.** Apps still
+  targeting iOS 14 or earlier cannot integrate this version.
 
 ## Installation
 
-### Cocoapods
-To integrate Dreams into your project using Cocoapods, add `Dreams` to your `Podfile`.
+> ### ⚠️ CocoaPods is going read-only — migrate to Swift Package Manager
+>
+> The CocoaPods project has been in maintenance mode since August 2024, and the
+> public Trunk specs repository becomes **permanently read-only on 2 December 2026**.
+> A test run of read-only mode is scheduled for 1–7 November 2026.
+>
+> **What this means for you:**
+> - Existing published versions stay installable indefinitely — your current builds will not break.
+> - No *new* versions of any pod can be published to Trunk after that date.
+> - Future releases of this SDK will be distributed via Swift Package Manager.
+>
+> **Swift Package Manager is the recommended integration method.** If you are
+> currently integrating via CocoaPods, please plan your migration before
+> December 2026. See the [CocoaPods Trunk read-only plan](https://blog.cocoapods.org/CocoaPods-Specs-Repo/)
+> for background.
 
-```ruby
-pod 'Dreams'
+### Swift Package Manager (recommended)
+
+In Xcode, choose **File → Add Package Dependencies…** and enter the repository URL:
+
+```
+https://github.com/dreamstechnology/dreams-ios-sdk.git
 ```
 
-Then run the following command:
+Select the `Dreams` library product and link it to all relevant targets.
+
+Or add it to your `Package.swift`:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/dreamstechnology/dreams-ios-sdk.git", from: "2.0.0")
+]
+```
+
+### CocoaPods
+
+Add the pod to your `Podfile`:
+
+```ruby
+pod 'DreamsEnterpriseSDK', '~> 2.0'
+```
+
+Then run:
 
 ```bash
 $ pod install
 ```
-
-### Swift Package Manager
-
-Dreams now also supports integration via Swift Package Manager. Add the Dreams package to your project and remember to link it to all relevant targets.
 
 ### Manually
 
@@ -169,10 +205,18 @@ func handleExitRequest() {
 
 ## Unit Tests
 
-You can run rests using [fastlane](./fastlane/README.md).
+You can run tests using [fastlane](./fastlane/README.md).
+
+```bash
+fastlane ios unit_test
+```
 
 To run unit tests manually use this command:
 
 ```bash
-xcodebuild -workspace "./Dreams.xcworkspace" -scheme "DreamsTests" -destination "platform=iOS Simulator,name=iPhone 8,OS=14.3" build-for-testing test
+xcodebuild test -workspace "./Dreams.xcworkspace" -scheme "DreamsTests" -destination "platform=iOS Simulator,name=iPhone 17"
 ```
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md).
