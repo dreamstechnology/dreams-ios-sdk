@@ -1,5 +1,5 @@
 # Dreams iOS SDK
-![Dreams](https://raw.githubusercontent.com/dreamstechnology/dreams-ios-sdk/main/Dreams.jpg)
+![Dreams](https://raw.githubusercontent.com/doconomy/dreams-ios-sdk/main/Dreams.jpg)
 
 [![Build Status](https://app.bitrise.io/app/a85e7d5e048cafc5/status.svg?token=ZnRPb1JZjxkq8YEt07RJCQ&branch=main)](https://app.bitrise.io/app/a85e7d5e048cafc5)
 [![Version](https://img.shields.io/cocoapods/v/Dreams.svg?style=flat)](https://cocoapods.org/pods/Dreams)
@@ -39,7 +39,7 @@
 In Xcode, choose **File → Add Package Dependencies…** and enter the repository URL:
 
 ```
-https://github.com/dreamstechnology/dreams-ios-sdk.git
+https://github.com/doconomy/dreams-ios-sdk.git
 ```
 
 Select the `Dreams` library product and link it to all relevant targets.
@@ -48,7 +48,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/dreamstechnology/dreams-ios-sdk.git", from: "2.0.0")
+    .package(url: "https://github.com/doconomy/dreams-ios-sdk.git", from: "2.0.0")
 ]
 ```
 

@@ -37,4 +37,4 @@ All notable changes to this library will be documented here.
 
 ## 1.3.0 and earlier
 
-See the [release tags](https://github.com/dreamstechnology/dreams-ios-sdk/tags).
+See the [release tags](https://github.com/doconomy/dreams-ios-sdk/tags).

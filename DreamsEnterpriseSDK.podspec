@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author         = { "Dreams Technology AB" => "didde.brockman@dreamstech.com" }
   s.platform       = :ios, "15.0"
 
-  s.source         = { :git => "https://github.com/dreamstechnology/dreams-ios-sdk.git", :tag => "#{s.version}" }
+  s.source         = { :git => "https://github.com/doconomy/dreams-ios-sdk.git", :tag => "#{s.version}" }
   s.source_files   = "Sources/*.swift"
   s.resource_bundles = { 'DreamsEnterpriseSDK' => ['Sources/PrivacyInfo.xcprivacy'] }
   s.frameworks     = "WebKit"
